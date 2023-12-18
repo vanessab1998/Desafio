@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD de Eventos</title>
+</head>
+<body>
+    <h1>CRUD de Eventos</h1>
+
+    <!-- Formulario para Crear un Evento -->
+    <h2>Crear Evento</h2>
+    <form id="createEventForm">
+        <label for="titulo">Título:</label>
+        <input type="text" id="titulo" required><br>
+        <label for="descripcion">Descripción:</label>
+        <textarea id="descripcion" required></textarea><br>
+        <label for="fecha">Fecha:</label>
+        <input type="date" id="fecha" required><br>
+        <label for="ubicacion">Ubicación:</label>
+        <input type="text" id="ubicacion" required><br>
+        <button type="button" onclick="crearEvento()">Crear Evento</button>
+    </form>
+
+    <!-- Lista de Eventos -->
+    <h2>Lista de Eventos</h2>
+    <ul id="eventList"></ul>
+
+    <!-- Formulario para Actualizar un Evento -->
+    <h2>Actualizar Evento</h2>
+    <form id="updateEventForm">
+        <label for="eventIdUpdate">ID del Evento:</label>
+        <input type="number" id="eventIdUpdate" required><br>
+        <label for="tituloUpdate">Nuevo Título:</label>
+        <input type="text" id="tituloUpdate" required><br>
+        <button type="button" onclick="actualizarEvento()">Actualizar Evento</button>
+    </form>
+
+    <!-- Formulario para Eliminar un Evento -->
+    <h2>Eliminar Evento</h2>
+    <form id="deleteEventForm">
+        <label for="eventIdDelete">ID del Evento:</label>
+        <input type="number" id="eventIdDelete" required><br>
+        <button type="button" onclick="eliminarEvento()">Eliminar Evento</button>
+    </form>
+
+    <script>
+        // Función para realizar una solicitud a la API y manejar la respuesta
+        function makeRequest(method, url, data = null) {
+            return fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: data ? JSON.stringify(data) : null,
+            })
+            .then(response => response.json())
+            .catch(error => {
+                console.error('Error en la solicitud:', error);
+                alert('Error en la solicitud');
+            });
+        }
+
+        // Función para crear un evento
+        function crearEvento() {
+            var titulo = document.getElementById('titulo').value;
+            var fecha = document.getElementById('fecha').value;
+            var ubicacion = document.getElementById('ubicacion').value;
+            var descripcion = document.getElementById('descripcion').value;
+
+            var data = {
+                'titulo': titulo,
+                'fecha': fecha,
+                'ubicacion': ubicacion,
+                'descripcion': descripcion,
+            };
+
+            makeRequest('POST', 'http://localhost:8000/api/eventos/', data)
+                .then(() => {
+                    alert('Evento creado exitosamente');
+                    document.getElementById('createEventForm').reset();
+                    cargarListaEventos();
+                });
+        }
+
+        // Función para cargar la lista de eventos
+        function cargarListaEventos() {
+            var eventList = document.getElementById('eventList');
+            eventList.innerHTML = ''; // Limpiar la lista antes de cargar nuevos eventos
+
+            makeRequest('GET', 'http://localhost:8000/api/eventos/')
+                .then(data => {
+                    data.forEach(evento => {
+                        var listItem = document.createElement('li');
+                        listItem.textContent = `${evento.titulo} - ${evento.fecha} - ${evento.ubicacion}`;
+                        eventList.appendChild(listItem);
+                    });
+                });
+        }
+
+        // Función para actualizar un evento
+        function actualizarEvento() {
+            var eventId = document.getElementById('eventIdUpdate').value;
+            var nuevoTitulo = document.getElementById('tituloUpdate').value;
+
+            var data = {
+                'titulo': nuevoTitulo,
+            };
+
+            makeRequest('PUT', `http://localhost:8000/api/eventos/${eventId}/`, data)
+                .then(() => {
+                    alert('Evento actualizado exitosamente');
+                    document.getElementById('updateEventForm').reset();
+                    cargarListaEventos();
+                });
+        }
+
+        // Función para eliminar un evento
+        function eliminarEvento() {
+            var eventId = document.getElementById('eventIdDelete').value;
+
+            makeRequest('DELETE', `http://localhost:8000/api/eventos/${eventId}/`)
+                .then(() => {
+                    alert('Evento eliminado exitosamente');
+                    document.getElementById('deleteEventForm').reset();
+                    cargarListaEventos();
+                });
+        }
+
+        // Cargar la lista de eventos al cargar la página
+        cargarListaEventos();
+    </script>
+</body>
+</html>
