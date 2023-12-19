@@ -1,14 +1,14 @@
 {% load static %}
 {% include 'base.html' %}
 <!doctype html>
+<link rel="stylesheet" href="{% static 'css/app.css' %}">
 <body>
-
     {% include 'header.html' %}
     <div class= "container">
         <h1>Agregar Evento</h1>
         
         <form id="addEventForm">
-            <label for="titulo">titulo:</label>
+            <label for="titulo">Título:</label>
             <input type="text" class="form-control" id="titulo" required><br>
 
             <label for="descripcion">Descripción:</label>
