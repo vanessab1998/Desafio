@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'rest_framework.authtoken',
     #'eventApp.apps.EventAppConfig',
     'eventApp',
     'public.apps.PublicConfig',
@@ -68,6 +67,13 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",
 ]
 
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost',]
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost',
+    'http://127.0.0.1',
+]
+
 
 ROOT_URLCONF = 'DESAFIO_BLACKNEXUS.urls'
 
@@ -82,6 +88,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+            
             ],
         },
     },

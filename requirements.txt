@@ -1,11 +1,7 @@
-
-xhtml2pdf
 django
-pillow
-django-admin-interface
 django-bootstrap4
-django-widget-tweaks
 requests
 django-cors-headers
+djangorestframework
 #pip install -r requirements.txt
 #project01\Scripts\activate
