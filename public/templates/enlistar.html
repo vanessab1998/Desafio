@@ -1,35 +1,11 @@
 {% load static %}
-<!doctype html>
-<html class="no-js" lang="zxx">
 {% include 'base.html' %}
 <head>
     <title>Lista de Eventos</title>
-    {% include 'header.html' %}
-    <link rel="stylesheet" href="{% static 'css/app.css' %}">
-
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
-</head>
-<link rel="stylesheet" href="{% static 'css/app.css' %}">
+{% include 'header.html' %}
 <body>
     <div class="container">
-
-    <h1>Lista de Eventos</h1>
+     <h1>Lista de Eventos</h1>
 
     <table id="eventTable">
         <thead>
@@ -46,6 +22,7 @@
         </tbody>
     </table>
     </div>
+    
     <script>
         // Función para obtener y mostrar la lista de eventos
         async function obtenerEventos() {

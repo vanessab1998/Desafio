@@ -1,17 +1,71 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Event</title>
-</head>
-<body>
-    <h1>Edit Event</h1>  
-    <form method="post" action="{% url 'edit_event' pk=event.id %}"> 
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Save">
-    </form>
-    <a href="{% url 'lista-eventos' %}">Back to Event List</a>
-</body>
+{% load static %}
+{% include 'base.html' %}
+{% include 'header.html' %}
+    <div class="container">
+        <h1>Editar Evento</h1>
+        <label for="event_id">ID del Evento:</label>
+        <input type="text" id="event_id" name="event_id" class="form-control" required><br>
+        <button class="button" onclick="buscarEvento()">Buscar Evento</button>
+        
+        <form id="EventForm" style="display:none;">
+            <label for="titulo">Título:</label>
+            <input type="text" class="form-control" id="titulo" name="titulo"  required><br>
+            <label for="descripcion">Descripción:</label>
+            <textarea type="text" id="descripcion" name="descripcion" class="form-control" required></textarea><br>
+            <label for="fecha">Fecha:</label>
+            <input type="date" id="fecha" name="fecha" class="form-control" required><br>
+            <label for="ubicacion">Ubicación:</label>
+            <input type="text" id="ubicacion" name="ubicacion" class="form-control" required><br>
+            <button class="button" onclick="editarEvento()">Guardar Cambios</button>
+        </form>
+    </div>
+
+    <script>
+        function buscarEvento() {
+            var eventId = document.getElementById('event_id').value;
+
+            // Realiza una solicitud GET para obtener los detalles del evento
+            fetch(`http://localhost:8000/api/eventos/${eventId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    // Rellena el formulario con los detalles del evento
+                    document.getElementById('titulo').value = data.titulo;
+                    document.getElementById('descripcion').value = data.descripcion;
+                    document.getElementById('fecha').value = data.fecha;
+                    document.getElementById('ubicacion').value = data.ubicacion;
+
+                    // Muestra el formulario de edición
+                    document.getElementById('EventForm').style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Evento no encontrado');
+                });
+        }
+
+        function editarEvento() {
+            var eventId = document.getElementById('event_id').value;
+
+            // Obtén los datos del formulario
+            var formData = new FormData(document.getElementById('EventForm'));
+
+            // Realiza una solicitud PUT para actualizar el evento
+            fetch(`http://localhost:8000/api/eventos/${eventId}/`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(Object.fromEntries(formData.entries())),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Evento actualizado:', data);
+                    alert('Evento actualizado con éxito');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error al actualizar el evento');
+                });
+        }
+    </script>
 </html>

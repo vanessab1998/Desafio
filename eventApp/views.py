@@ -1,11 +1,12 @@
 from asyncio import events
 from os import abort
+
 from click import Abort
 from django.http import HttpResponseRedirect
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 import requests
 from rest_framework import generics
-
+from django.contrib import messages
 from eventApp import apps
 from .models import Evento
 from .serializers import EventoSerializer
@@ -24,34 +25,19 @@ class DetalleEvento(generics.RetrieveUpdateDestroyAPIView):
 def enlistar(request):
     return render(request, 'enlistar.html')
 
+def edit_event(request):
+    return render(request, 'edit_event.html')
 
-from rest_framework import generics
-from .models import Evento
-from .serializers import EventoSerializer
+def lista_eventos(request):
+    eventos = Evento.objects.all()
+    context = {
+        'eventos': eventos,
+    }
+    return render(request, 'lista_eventos.html', context)
 
-class EventList(generics.ListCreateAPIView):
-    queryset = Evento.objects.all()
-    serializer_class = EventoSerializer
-
-class EventDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Evento.objects.all()
-    serializer_class = EventoSerializer
-
-from django.shortcuts import render, get_object_or_404
-from .models import Evento
-from .forms import EventForm
-
-def edit_event(request, pk):
-    evento = get_object_or_404(Evento, pk=pk)
-
-    if request.method == 'POST':
-        form = EventForm(request.POST, instance=evento)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/lista-eventos/')
-    else:
-        form = EventForm(instance=evento)
-
-    return render(request, 'edit_event.html', {'form': form, 'evento': evento})
-
-
+def eliminar_evento(request, evento_id): #ELIMINAR Evento
+    horaMed = get_object_or_404(Evento, id=evento_id)
+    horaMed.delete()
+    messages.success(request, "Eliminado correctamente")
+ 
+    return redirect(to="lista_eventos")
