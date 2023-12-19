@@ -1,0 +1,114 @@
+.h1 {
+    color: red;
+    align-items: center;
+}
+
+/*navbar*/
+.nav justify-content-end{
+    background-color: rgb(190, 146, 190);
+    position: relative;
+  background-position: right;
+     
+  
+  }
+  
+.nav-link{
+    text-align: center;
+    line-height: 1.5;
+    list-style: none;
+}
+
+.navbar-expand-lg
+{
+        background-color:rgb(46, 189, 214);
+}
+
+.navbar
+{
+    background-color:rgb(46, 189, 214);
+
+}
+
+.d-block{
+    margin-top: 50px;
+    display: block!important;
+}
+
+.img{
+    padding:8px;
+    background-color: #f5f5f5;
+    width: 200px;
+}
+.imglogo{
+    height: 50px;
+    width: 50px;
+    padding:3px;
+    background-color: #f5f5f5;
+}
+
+.imgcontact{
+    height: 250px;
+    width: 250px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+
+/* Estilos generales para el botón */
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: 2px solid #007bff;
+    color: #007bff;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Estilo al pasar el ratón sobre el botón */
+.button:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* Otros estilos opcionales */
+/* Ajusta el ancho del botón según sea necesario */
+/*.button {
+    width: 150px;
+}*/
+
+/* Estilo para un botón secundario */
+/*.button.secondary {
+    border-color: #ccc;
+    color: #ccc;
+}*/
+
+/* Estilo para un botón de éxito */
+/*.button.success {
+    border-color: #28a745;
+    color: #28a745;
+}*/
+
+/* Estilo para un botón de error */
+/*.button.error {
+    border-color: #dc3545;
+    color: #dc3545;
+}*/

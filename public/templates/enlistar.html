@@ -1,0 +1,78 @@
+{% load static %}
+<!doctype html>
+<html class="no-js" lang="zxx">
+{% include 'base.html' %}
+
+<head>
+    <title>Lista de Eventos</title>
+    {% include 'header.html' %}
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+{% block content %}
+
+<body>
+    <div class="container">
+
+    <h1>Lista de Eventos</h1>
+
+    <table id="eventTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Descripcion</th>
+                <th>Fecha</th>
+                <th>Ubicación</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Datos de eventos se insertarán aquí -->
+        </tbody>
+    </table>
+    </div>
+    <script>
+        // Función para obtener y mostrar la lista de eventos
+        async function obtenerEventos() {
+            try {
+                const response = await fetch('http://localhost:8000/api/eventos/');
+                const eventos = await response.json();
+
+                // Limpia la tabla antes de agregar los nuevos eventos
+                const eventTable = document.getElementById('eventTable');
+                eventTable.getElementsByTagName('tbody')[0].innerHTML = '';
+
+                // Agrega cada evento a la tabla
+                eventos.forEach(evento => {
+                    const newRow = eventTable.getElementsByTagName('tbody')[0].insertRow();
+                    newRow.innerHTML = `<td>${evento.id}</td><td>${evento.titulo}</td><td>${evento.descripcion}</td><td>${evento.fecha}</td><td>${evento.ubicacion}</td>`;
+                });
+            } catch (error) {
+                console.error('Error al obtener la lista de eventos:', error);
+                alert('Error al obtener la lista de eventos');
+            }
+        }
+
+        // Llama a la función para obtener y mostrar la lista de eventos al cargar la página
+        obtenerEventos();
+    </script>
+
+</body>
+</html>
+{% endblock %}

@@ -13,3 +13,6 @@ class ListaEventos(generics.ListCreateAPIView):
 class DetalleEvento(generics.RetrieveUpdateDestroyAPIView):
     queryset = Evento.objects.all()
     serializer_class = EventoSerializer
+
+def enlistar(request):
+    return render(request, 'enlistar.html')

@@ -1,68 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
+{% load static %}
+<!doctype html>
+<html class="no-js" lang="zxx">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRUD de Eventos</title>
+<link rel="stylesheet" href="{% static 'src/App.css' %}">
 </head>
 <body>
-    <h1>CRUD de Eventos</h1>
+{% include 'base.html' %}
+    {% include 'header.html' %}
+    <div class= "container">
+        <h1>Agregar Evento</h1>
+        
+        <form id="addEventForm">
+            <label for="titulo">titulo:</label>
+            <input type="text" class="form-control" id="titulo" required><br>
 
-    <!-- Formulario para Crear un Evento -->
-    <h2>Crear Evento</h2>
-    <form id="createEventForm">
-        <label for="titulo">Título:</label>
-        <input type="text" id="titulo" required><br>
-        <label for="descripcion">Descripción:</label>
-        <textarea id="descripcion" required></textarea><br>
-        <label for="fecha">Fecha:</label>
-        <input type="date" id="fecha" required><br>
-        <label for="ubicacion">Ubicación:</label>
-        <input type="text" id="ubicacion" required><br>
-        <button type="button" onclick="crearEvento()">Crear Evento</button>
-    </form>
+            <label for="descripcion">Descripción:</label>
+            <textarea id="descripcion" class="form-control" required></textarea><br>
+            
+            <label for="fecha">Fecha:</label>
+            <input type="date" id="fecha" class="form-control" required><br>
+            
+            <label for="ubicacion">Ubicación:</label>
+            <input type="text" id="ubicacion" class="form-control"required><br>
 
-    <!-- Lista de Eventos -->
-    <h2>Lista de Eventos</h2>
-    <ul id="eventList"></ul>
-
-    <!-- Formulario para Actualizar un Evento -->
-    <h2>Actualizar Evento</h2>
-    <form id="updateEventForm">
-        <label for="eventIdUpdate">ID del Evento:</label>
-        <input type="number" id="eventIdUpdate" required><br>
-        <label for="tituloUpdate">Nuevo Título:</label>
-        <input type="text" id="tituloUpdate" required><br>
-        <button type="button" onclick="actualizarEvento()">Actualizar Evento</button>
-    </form>
-
-    <!-- Formulario para Eliminar un Evento -->
-    <h2>Eliminar Evento</h2>
-    <form id="deleteEventForm">
-        <label for="eventIdDelete">ID del Evento:</label>
-        <input type="number" id="eventIdDelete" required><br>
-        <button type="button" onclick="eliminarEvento()">Eliminar Evento</button>
-    </form>
+            <button type="button" class="button" onclick="agregarEvento()">Agregar Evento</button>
+        </form>
+    <div>
 
     <script>
-        // Función para realizar una solicitud a la API y manejar la respuesta
-        function makeRequest(method, url, data = null) {
-            return fetch(url, {
-                method: method,
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: data ? JSON.stringify(data) : null,
-            })
-            .then(response => response.json())
-            .catch(error => {
-                console.error('Error en la solicitud:', error);
-                alert('Error en la solicitud');
-            });
-        }
-
-        // Función para crear un evento
-        function crearEvento() {
+        function agregarEvento() {
             var titulo = document.getElementById('titulo').value;
             var fecha = document.getElementById('fecha').value;
             var ubicacion = document.getElementById('ubicacion').value;
@@ -70,65 +36,30 @@
 
             var data = {
                 'titulo': titulo,
-                'fecha': fecha,
-                'ubicacion': ubicacion,
                 'descripcion': descripcion,
+                'fecha': fecha,
+                'ubicacion': ubicacion
             };
 
-            makeRequest('POST', 'http://localhost:8000/api/eventos/', data)
-                .then(() => {
-                    alert('Evento creado exitosamente');
-                    document.getElementById('createEventForm').reset();
-                    cargarListaEventos();
-                });
+            fetch('http://localhost:8000/api/eventos/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Evento agregado:', data);
+                alert('Evento agregado exitosamente');
+                // Puedes redirigir al usuario o realizar otras acciones después de agregar el evento
+            })
+            .catch(error => {
+                console.error('Error al agregar el evento:', error);
+                alert('Error al agregar el evento');
+            });
         }
-
-        // Función para cargar la lista de eventos
-        function cargarListaEventos() {
-            var eventList = document.getElementById('eventList');
-            eventList.innerHTML = ''; // Limpiar la lista antes de cargar nuevos eventos
-
-            makeRequest('GET', 'http://localhost:8000/api/eventos/')
-                .then(data => {
-                    data.forEach(evento => {
-                        var listItem = document.createElement('li');
-                        listItem.textContent = `${evento.titulo} - ${evento.fecha} - ${evento.ubicacion}`;
-                        eventList.appendChild(listItem);
-                    });
-                });
-        }
-
-        // Función para actualizar un evento
-        function actualizarEvento() {
-            var eventId = document.getElementById('eventIdUpdate').value;
-            var nuevoTitulo = document.getElementById('tituloUpdate').value;
-
-            var data = {
-                'titulo': nuevoTitulo,
-            };
-
-            makeRequest('PUT', `http://localhost:8000/api/eventos/${eventId}/`, data)
-                .then(() => {
-                    alert('Evento actualizado exitosamente');
-                    document.getElementById('updateEventForm').reset();
-                    cargarListaEventos();
-                });
-        }
-
-        // Función para eliminar un evento
-        function eliminarEvento() {
-            var eventId = document.getElementById('eventIdDelete').value;
-
-            makeRequest('DELETE', `http://localhost:8000/api/eventos/${eventId}/`)
-                .then(() => {
-                    alert('Evento eliminado exitosamente');
-                    document.getElementById('deleteEventForm').reset();
-                    cargarListaEventos();
-                });
-        }
-
-        // Cargar la lista de eventos al cargar la página
-        cargarListaEventos();
     </script>
 </body>
 </html>
+

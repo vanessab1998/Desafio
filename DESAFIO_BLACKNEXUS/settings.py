@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     #'eventApp.apps.EventAppConfig',
     'eventApp',
     'public.apps.PublicConfig',
+    'corsheaders',
 ]
 
 REST_FRAMEWORK = {
@@ -57,7 +58,15 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    
 ]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+]
+
 
 ROOT_URLCONF = 'DESAFIO_BLACKNEXUS.urls'
 
