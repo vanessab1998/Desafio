@@ -1,11 +1,8 @@
 {% load static %}
-<!doctype html>
-<html class="no-js" lang="zxx">
-<head>
-<link rel="stylesheet" href="{% static 'src/App.css' %}">
-</head>
-<body>
 {% include 'base.html' %}
+<!doctype html>
+<body>
+
     {% include 'header.html' %}
     <div class= "container">
         <h1>Agregar Evento</h1>
@@ -23,7 +20,7 @@
             <label for="ubicacion">Ubicación:</label>
             <input type="text" id="ubicacion" class="form-control"required><br>
 
-            <button type="button" class="button" onclick="agregarEvento()">Agregar Evento</button>
+            <button type="button" class="btn btn-primary" onclick="agregarEvento()">Agregar Evento</button>
         </form>
     <div>
 
